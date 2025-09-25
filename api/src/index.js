@@ -16,10 +16,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/user", require("./Controllers/user"));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.get("/", (req, res) => {
+  res.send("API - Last deploy: " + new Date().toISOString());
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});

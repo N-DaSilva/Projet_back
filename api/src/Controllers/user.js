@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+//use passport to check jwt token
 
 const UserObject = require("../Models/user");
 
@@ -10,7 +11,49 @@ const config = require("../config");
 const JWT_MAX_AGE = "6m"; // 6 months
 
 router.get("/", async (req, res) => {
-    return res.json({ message: "User endpoint is working." });
+    try {
+        const users = await UserObject.find().select("-password").lean();
+        return res.status(200).send({ ok: true, data: users });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            ok: false,
+            code: "SERVER_ERROR"
+        });
+    }
+})
+
+router.get("/find/:id", async (req, res) => {
+    const { id } = req.params;
+
+    if (id.length < 24) {
+        return res.status(400).send({
+            ok: false,
+            code: "INVALID_ID",
+            message: "ID is not valid"
+        });
+    }
+    
+    try {
+        const user = await UserObject.findById(id);
+
+        if (!user){
+            return res.status(404).send({
+                ok: false,
+                code: "USER_NOT_FOUND",
+                message: "User not found"
+            })
+        }
+
+        return res.status(200).send({ ok: true, data: user });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            ok: false,
+            code: "SERVER_ERROR"
+        });
+    }
 })
 
 router.post("/signin", async (req, res) => {
@@ -95,13 +138,42 @@ router.post("/signup", async (req, res) => {
     }
 });
 
+router.put("/:id/score", async (req, res) => {
+    const { id } = req.params;
+    const { score } = req.body;
 
-//delete after testing
+    if (id.length < 24) {
+        return res.status(400).send({
+            ok: false,
+            code: "INVALID_ID",
+            message: "ID is not valid"
+        });
+    }
 
-router.get("/flush", async (req, res) => {
+    if (typeof score !== "number" || score < 0) {
+        return res.status(400).send({
+            ok: false,
+            code: "INVALID_SCORE",
+            message: "Score must be a positive number"
+        });
+    }
+
     try {
-        await UserObject.deleteMany({});
-        return res.status(200).send({ ok: true, message: "All users deleted." });
+        const user = await UserObject.findById(id);
+
+        if (!user) {
+            return res.status(404).send({
+                ok: false,
+                code: "USER_NOT_FOUND",
+                message: "User not found"
+            });
+        }
+
+        user.score = score;
+        await user.save();
+
+        return res.status(200).send({ ok: true, data: user });
+
     } catch (error) {
         console.log(error);
         return res.status(500).send({
@@ -109,6 +181,38 @@ router.get("/flush", async (req, res) => {
             code: "SERVER_ERROR"
         });
     }
+});
+
+router.get("/leaderboard", async (req, res) => {
+    try {
+        const topUsers = await UserObject.find()
+        .sort({ score: -1})
+        .limit(100);
+
+        return res.status(200).send({ ok: true, data: topUsers });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            ok: false,
+            code: "SERVER_ERROR"
+        })
+    }
 })
+
+
+//delete after testing
+
+// router.get("/flush", async (req, res) => {
+//     try {
+//         await UserObject.deleteMany({});
+//         return res.status(200).send({ ok: true, message: "All users deleted." });
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).send({
+//             ok: false,
+//             code: "SERVER_ERROR"
+//         });
+//     }
+// })
 
 module.exports = router;
