@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 
 export default function RootLayout() {
-    const isLoggedIn = true;
+    const isLoggedIn = false;
 
     return (
         <Stack>
