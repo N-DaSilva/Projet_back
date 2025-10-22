@@ -1,7 +1,8 @@
 import { Link, useRouter } from "expo-router";
 import { Pressable, Text, TextInput } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import stylesheet from '@/components/stylesheet';
 
 export default function Index() {
@@ -9,8 +10,11 @@ export default function Index() {
   const styles = stylesheet();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showLoader, setShowLoader] = useState(false);
 
   const handleSignin = () => {
+    setShowLoader(true);
+
     fetch('http://192.168.43.74:3000/user/signin', {
       method: 'POST',
       headers: {
@@ -23,11 +27,13 @@ export default function Index() {
       }),
     }).then((response) => response.json())
     .then((data) => {
+      setShowLoader(false);
       console.log(data);
       if (data.ok) {
-        
-        // Redirect to app
-        router.replace('/(app)');
+        AsyncStorage.setItem('token', data.token).then(() => {
+          router.replace('/(app)');
+          console.log('logged in');
+        });
       } else {
         alert('Erreur: ' + data.message);
       }
@@ -44,6 +50,12 @@ export default function Index() {
       <Pressable style={styles.button} onPress={handleSignin}>
         <Text style={styles.buttonText}>Se connecter</Text>
       </Pressable>
+
+      {showLoader ? (
+
+      <Text style={styles.loading}>Chargement...</Text>
+
+      ) : null}
 
       <Link href='/signup' asChild>
         <Pressable onPress={() => router.replace('/(auth)/signup')}>

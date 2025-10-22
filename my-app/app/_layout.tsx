@@ -1,7 +1,14 @@
 import { Stack } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
 
 export default function RootLayout() {
-    const isLoggedIn = false;
+    const [ isLoggedIn, setIsLoggedIn ] = useState(false)
+    useEffect(() => {
+        AsyncStorage.getItem('token').then((res)=>{
+            setIsLoggedIn(res !== null);
+        })
+    }, []);
 
     return (
         <Stack>

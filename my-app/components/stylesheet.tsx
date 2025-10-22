@@ -52,6 +52,10 @@ export default function stylesheet() {
             width: '90%',
             justifyContent: "center",
             alignItems: "center",
+        },
+        loading : {
+            color: "white",
+            marginTop: 16
         }
     })
     return styles;
