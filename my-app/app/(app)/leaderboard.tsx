@@ -1,18 +1,51 @@
 import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import stylesheet from '@/components/stylesheet';
+import { useState, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Leaderboard() {
     const styles = stylesheet();
+    const [showLoader, setShowLoader] = useState(false);
+    const [leaderboard, setLeaderboard] = useState([{ _id: '', username: '', score: 0 }]);
+
+    const getLeaderboard = async () => {
+        setShowLoader(true);
+
+        fetch('http://192.168.43.74:3000/user/leaderboard/', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }
+        }).then((response) => response.json())
+            .then((res) => {
+                setShowLoader(false);
+                if (res.ok) {
+                    setLeaderboard(res.data)
+                } else {
+                    alert('Erreur: ' + res.message);
+                }
+            })
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            getLeaderboard();
+        }, [])
+    );
 
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Leaderboard</Text>
-            <Text style={styles.text}>1. JaneDoe - 1500 points</Text>
-            <Text style={styles.text}>2. JohnSmith - 1200 points</Text>
-            <Text style={styles.text}>3. AliceW - 1100 points</Text>
-            <Text style={styles.text}>4. BobK - 900 points</Text>
-            <Text style={styles.text}>5. CharlieM - 850 points</Text>
+
+            {showLoader ? (
+
+                <Text style={styles.loading}>Chargement...</Text>
+
+            ) :
+                leaderboard.map((user) => <Text style={styles.text} key={user._id}>{leaderboard.findIndex((u) => u._id === user._id) + 1}. {user.username} - {user.score} points</Text>)
+            }
         </SafeAreaView>
     )
 }

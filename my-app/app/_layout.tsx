@@ -1,23 +1,28 @@
 import { Stack } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { AuthContext } from './authContext';
+import AuthProvider from './authContext';
 
-export default function RootLayout() {
-    const [ isLoggedIn, setIsLoggedIn ] = useState(false)
-    useEffect(() => {
-        AsyncStorage.getItem('token').then((res)=>{
-            setIsLoggedIn(res !== null);
-        })
-    }, []);
+function RootStack() {
+    const { isLoggedIn } = useContext(AuthContext);
 
     return (
         <Stack>
             <Stack.Protected guard={!isLoggedIn}>
-                <Stack.Screen name='(auth)' options={{ headerShown: false }} />
+                <Stack.Screen name='(auth)' options={{ headerShown: false, animation: 'none' }} />
             </Stack.Protected>
             <Stack.Protected guard={!!isLoggedIn}>
-                <Stack.Screen name='(app)' options={{ headerShown: false }} />
+                <Stack.Screen name='(app)' options={{ headerShown: false, animation: 'none' }} />
             </Stack.Protected>
         </Stack>
+    )
+}
+
+export default function RootLayout() {
+    return (
+        <AuthProvider>
+            <RootStack />
+        </AuthProvider>
     )
 }

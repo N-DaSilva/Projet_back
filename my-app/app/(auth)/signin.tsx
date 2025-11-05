@@ -1,13 +1,15 @@
 import { Link, useRouter } from "expo-router";
 import { Pressable, Text, TextInput } from "react-native";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import stylesheet from '@/components/stylesheet';
+import { AuthContext } from '../authContext';
 
 export default function Index() {
   const router = useRouter();
   const styles = stylesheet();
+  const { login } = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showLoader, setShowLoader] = useState(false);
@@ -26,16 +28,15 @@ export default function Index() {
         password: password,
       }),
     }).then((response) => response.json())
-    .then((data) => {
+    .then((res) => {
       setShowLoader(false);
-      console.log(data);
-      if (data.ok) {
-        AsyncStorage.setItem('token', data.token).then(() => {
-          router.replace('/(app)');
-          console.log('logged in');
-        });
+      console.log(res);
+      if (res.ok) {
+        console.log('data token: ', res.token, ' ; data id: ', res.data._id);
+        login(res.token, res.data._id);
+        console.log('logged in');
       } else {
-        alert('Erreur: ' + data.message);
+        alert('Erreur: ' + res.message);
       }
     })
   }
