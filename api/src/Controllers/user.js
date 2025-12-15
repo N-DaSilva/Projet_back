@@ -202,17 +202,17 @@ router.get("/leaderboard", async (req, res) => {
 
 //delete after testing
 
-router.get("/flush", async (req, res) => {
-    try {
-        await UserObject.deleteMany({});
-        return res.status(200).send({ ok: true, message: "All users deleted." });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).send({
-            ok: false,
-            code: "SERVER_ERROR"
-        });
-    }
-})
+// router.get("/flush", async (req, res) => {
+//     try {
+//         await UserObject.deleteMany({});
+//         return res.status(200).send({ ok: true, message: "All users deleted." });
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).send({
+//             ok: false,
+//             code: "SERVER_ERROR"
+//         });
+//     }
+// })
 
 module.exports = router;
