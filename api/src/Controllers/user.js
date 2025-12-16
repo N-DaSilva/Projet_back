@@ -138,6 +138,53 @@ router.post("/signup", async (req, res) => {
     }
 });
 
+router.put("/:id/username", async (req, res) => {
+    const { id } = req.params;
+    const { username } = req.body;
+
+    if (id.length < 24) {
+        return res.status(400).send({
+            ok: false,
+            code: "INVALID_ID",
+            message: "ID is not valid"
+        });
+    }
+
+    try {
+        const user = await UserObject.findById(id);
+
+        if (!user) {
+            return res.status(404).send({
+                ok: false,
+                code: "USER_NOT_FOUND",
+                message: "User not found"
+            });
+        }
+
+        const userWithSameName = await UserObject.find({ username : username });
+
+        if (userWithSameName.length != 0) {
+            return res.status(400).send({
+                ok: false,
+                code: "INVALID_USERNAME",
+                message: "Username already taken"
+            })
+        }
+
+        user.username = username;
+        await user.save();
+
+        return res.status(200).send({ ok: true, data: user.username });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            ok: false,
+            code: "SERVER_ERROR"
+        });
+    }
+})
+
 router.put("/:id/score", async (req, res) => {
     const { id } = req.params;
     const { score } = req.body;

@@ -20,7 +20,7 @@ export default function stylesheet() {
             fontSize: 36,
             fontWeight: "bold",
             color: "white",
-            marginBottom: 32,
+            marginBottom: 16,
         },
         button: {
             backgroundColor: "#00C4D6",
@@ -34,6 +34,12 @@ export default function stylesheet() {
         buttonText: {
             color: "#12072E",
             fontWeight: "bold",
+        },
+        containerH: {
+            flexDirection: "row",
+            alignItems: "flex-start",
+            marginBottom: 16,
+            gap: 8,
         },
         input: {
             width: '90%',
@@ -79,6 +85,30 @@ export default function stylesheet() {
             width: 160,
             justifyContent: "center",
             alignItems: "center",
+        },
+        profileInput : {
+            width: '50%',
+            borderWidth: 1,
+            padding: 16,
+            backgroundColor: "white",
+            borderRadius: 15,
+            borderColor: "transparent",
+        },
+        profileContainer : {
+            flexDirection : "row",
+            alignItems : "center",
+            gap : 8,
+            height : 60
+        },
+        profileButton : {
+            backgroundColor: "#00C4D6",
+            padding: 16,
+            borderRadius: 15,
+            width: '15%',
+            alignItems: "center",
+        },
+        marginTop : {
+            marginTop : 16
         }
     })
     return styles;
