@@ -111,9 +111,7 @@ export default function Profile() {
                                 <Text style={styles.text}>{usernameUpdated.reason}</Text>
                             )}
                         </>
-                    ) : (
-                        <View style={{height:60}}></View>
-                    )}
+                    ) : null }
 
 
 
