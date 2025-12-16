@@ -1,3 +1,4 @@
+import Leaderboard from "@/app/(app)/leaderboard";
 import { StyleSheet } from "react-native";
 
 export default function stylesheet() {
@@ -44,18 +45,40 @@ export default function stylesheet() {
             borderColor: "transparent",
         },
         clickerButton: {
-            backgroundColor: "#00C4D6",
-            padding: 12,
-            borderRadius: 50,
+            height: 300,
+            width: 300,
             marginTop: 32,
-            height: 100,
-            width: '90%',
-            justifyContent: "center",
-            alignItems: "center",
         },
         loading : {
             color: "white",
             marginTop: 16
+        },
+        leaderboard : {
+            color: "#ffffff",
+            marginBottom: 24,
+            textAlign : "center"
+        },
+        first : {
+            fontSize : 24,
+            color : "#ffffff",
+            marginBottom: 24,
+            textAlign : "center",
+            fontWeight : "bold"
+        },
+        scrollBox : {
+            width : '100%',
+            flex : 1,
+            padding : 16
+        },
+        disconnectButton : {
+            marginTop : 32,
+            backgroundColor: "#00C4D6",
+            padding: 16,
+            borderRadius: 15,
+            marginBottom: 16,
+            width: 160,
+            justifyContent: "center",
+            alignItems: "center",
         }
     })
     return styles;

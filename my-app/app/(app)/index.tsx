@@ -1,5 +1,5 @@
-import { Pressable, Text } from 'react-native';
-import { useState } from 'react';
+import { Pressable, Text, Image, Animated } from 'react-native';
+import { useState, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import stylesheet from '@/components/stylesheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,6 +7,17 @@ import { useEffect } from 'react';
 
 export default function Homepage() {
     const styles = stylesheet();
+
+    const buttonClickAnim = useRef(new Animated.Value(1)).current;
+
+    const shrinkButton = () => {
+        Animated.spring(buttonClickAnim, {
+            toValue: 0.90,
+            useNativeDriver: true,
+            speed: 50
+        }).start();
+    }
+
     const [points, setPoints] = useState(0);
 
     const setInitialScore = async () => {
@@ -32,7 +43,7 @@ export default function Homepage() {
         setInitialScore();
     }, [])
 
-    const updateScoreOnServer = async (points : number) => {
+    const updateScoreOnServer = async (points: number) => {
         const userID = await AsyncStorage.getItem("userId");
 
         fetch('http://192.168.43.74:3000/user/' + userID + '/score', {
@@ -67,8 +78,19 @@ export default function Homepage() {
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Clicker</Text>
             <Text style={styles.text}>{points} points</Text>
-            <Pressable style={styles.clickerButton} onPress={handlePress}>
-                <Text style={styles.buttonText}>click here</Text>
+            <Pressable onPress={handlePress} onPressIn={shrinkButton} onPressOut={() => {
+                Animated.spring(buttonClickAnim, {
+                    toValue: 1,
+                    useNativeDriver: true,
+                    speed: 50
+                }).start();
+            }}>
+                <Animated.View style={[{ transform: [{ scale: buttonClickAnim }] }]}>
+                    <Image
+                    style={styles.clickerButton}
+                    source={require('@/assets/images/splash-icon.png')}
+                />
+                </Animated.View>
             </Pressable>
         </SafeAreaView>
     )

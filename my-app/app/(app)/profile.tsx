@@ -56,7 +56,7 @@ export default function Profile() {
                     <Text style={styles.text}>a rejoint clicker le : {userData.joined_the.split("T")[0]}</Text>
                     <Text style={styles.text}>Nombre de points : {userData.score}</Text>
 
-                    <Pressable style={styles.button} onPress={disconnect}>
+                    <Pressable style={styles.disconnectButton} onPress={disconnect}>
                         <Text style={styles.buttonText}>Se déconnecter</Text>
                     </Pressable>
                 </>

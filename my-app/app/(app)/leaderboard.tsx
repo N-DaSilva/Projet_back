@@ -1,4 +1,4 @@
-import { Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import stylesheet from '@/components/stylesheet';
 import { useState, useCallback } from 'react';
@@ -38,14 +38,17 @@ export default function Leaderboard() {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.title}>Leaderboard</Text>
+            <ScrollView style={styles.scrollBox}>
 
-            {showLoader ? (
+                {showLoader ? (
 
-                <Text style={styles.loading}>Chargement...</Text>
+                    <Text style={styles.loading}>Chargement...</Text>
 
-            ) :
-                leaderboard.map((user) => <Text style={styles.text} key={user._id}>{leaderboard.findIndex((u) => u._id === user._id) + 1}. {user.username} - {user.score} points</Text>)
-            }
+                ) :
+
+                    leaderboard.map((user) => <Text style={leaderboard.findIndex((u) => u._id === user._id) === 0 ? styles.first : styles.leaderboard} key={user._id}>{leaderboard.findIndex((u) => u._id === user._id) + 1}. {user.username} - {user.score} points</Text>)
+                }
+            </ScrollView>
         </SafeAreaView>
     )
 }
