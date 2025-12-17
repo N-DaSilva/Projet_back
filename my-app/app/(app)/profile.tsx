@@ -1,4 +1,4 @@
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Pressable, Text, TextInput, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import stylesheet from '@/components/stylesheet';
@@ -37,12 +37,16 @@ export default function Profile() {
         }).then((response) => response.json())
             .then((res) => {
                 if (res.ok) {
-                    setUsernameUpdated({ state: true, reason: 'Username updated successfully' });
+                    setUsernameUpdated({ state: true, reason: 'Pseudo mis à jour avec succès' });
                     setUserData({ ...userData, username: newUsername });
                     return;
                 } else {
-                    setUsernameUpdated({ state: false, reason: 'Failed to update username' });
-                    alert('Erreur: ' + res.message);
+                    if (res.message == 'Username already taken') {
+                        setUsernameUpdated({ state: false, reason: 'Ce pseudo est déjà pris' });
+                    } else {
+                        setUsernameUpdated({ state: false, reason: 'Erreur lors de la mise à jour du pseudo' });
+                    }
+                    return;
                 }
             })
     }
@@ -92,36 +96,38 @@ export default function Profile() {
 
             ) : (
                 <>
+                    <Text style={styles.title}>Profil</Text>
+                    <Pressable style={styles.disconnectButton} onPress={disconnect}>
+                        <Ionicons name="exit-outline" size={32} color="white" />
+                    </Pressable>
+
+                    <Image style={styles.profilePicture} source={require('@/assets/images/profile-picture.png')}/>
                     <View style={styles.containerH}>
-                        <Text style={styles.title}>Profil de {userData.username}</Text>
+                        <Text style={styles.profileUsername}>{userData.username}</Text>
                         <Pressable onPress={handleDisplayModify}>
-                            <FontAwesome name="pencil-square-o" size={24} color="white" />
+                            <FontAwesome name="pencil-square-o" size={20} color="white" />
                         </Pressable>
                     </View>
 
                     {displayModify ? (
                         <>
                             <View style={styles.profileContainer}>
-                                <TextInput style={styles.profileInput} onChangeText={newUsrText => setNewUsername(newUsrText)} placeholder="Changer votre pseudo" />
+                                <TextInput style={styles.profileInput} onChangeText={newUsrText => setNewUsername(newUsrText)} placeholder="Nouveau pseudo" />
                                 <Pressable style={styles.profileButton} onPress={handleUsernameUpdate}>
-                                    <Ionicons name="send-sharp" size={24} color="#12072E" />
+                                    <Ionicons name="send" size={24} color="#12072E" />
                                 </Pressable>
                             </View>
                             {usernameUpdated.reason !== '' && (
                                 <Text style={styles.text}>{usernameUpdated.reason}</Text>
                             )}
                         </>
-                    ) : null }
+                    ) : null}
 
 
-
-
-                    <Text style={[styles.text, styles.marginTop]}>a rejoint clicker le : {userData.joined_the.split("T")[0]}</Text>
-                    <Text style={[styles.text, styles.marginTop]}>Nombre de points : {userData.score}</Text>
-
-                    <Pressable style={styles.disconnectButton} onPress={disconnect}>
-                        <Text style={styles.buttonText}>Se déconnecter</Text>
-                    </Pressable>
+                    <View style={[styles.marginTop, { width: '100%', paddingHorizontal: 48 }]}>
+                        <Text style={[styles.text, styles.marginTop]}>A rejoint le : {userData.joined_the.split("T")[0]}</Text>
+                        <Text style={[styles.text, styles.marginTop]}>Score : {userData.score} pts</Text>
+                    </View>
                 </>
 
             )}

@@ -46,7 +46,15 @@ export default function Leaderboard() {
 
                 ) :
 
-                    leaderboard.map((user) => <Text style={leaderboard.findIndex((u) => u._id === user._id) === 0 ? styles.first : styles.leaderboard} key={user._id}>{leaderboard.findIndex((u) => u._id === user._id) + 1}. {user.username} - {user.score} points</Text>)
+                    // leaderboard.map((user) => <Text style={leaderboard.findIndex((u) => u._id === user._id) === 0 ? styles.first : styles.leaderboard} key={user._id}>{leaderboard.findIndex((u) => u._id === user._id) + 1}. {user.username} - {user.score} pts</Text>)
+
+                    leaderboard.map((user, index) => {
+                        let style = styles.leaderboard;
+                        if (index === 0) style = styles.first;
+                        else if (index === 1) style = styles.second;
+                        else if (index === 2) style = styles.third;
+                        return <Text style={style} key={user._id}>{index + 1}. {user.username} - {user.score} pts</Text>;
+                    })
                 }
             </ScrollView>
         </SafeAreaView>

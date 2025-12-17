@@ -40,7 +40,7 @@ export default function Index() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.containerCenter}>
       <Text style={styles.title}>Inscription</Text>
 
       <TextInput style={styles.input} onChangeText={newUsrText => setUsername(newUsrText)} placeholder="Username" />

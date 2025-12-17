@@ -7,8 +7,8 @@ export default function Index() {
     const router = useRouter();
     const styles = stylesheet();
     return (
-        <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Clicker homepage</Text>
+        <SafeAreaView style={styles.containerCenter}>
+            <Text style={[styles.title, styles.marginBottom]}>Star Clicker</Text>
 
             <Link href='/signin' style={styles.button} asChild>
                 <Pressable onPress={() => router.navigate('/(auth)/signin')}>

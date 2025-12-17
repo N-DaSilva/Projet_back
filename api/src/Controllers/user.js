@@ -164,9 +164,9 @@ router.put("/:id/username", async (req, res) => {
         const userWithSameName = await UserObject.find({ username : username });
 
         if (userWithSameName.length != 0) {
-            return res.status(400).send({
+            return res.status(401).send({
                 ok: false,
-                code: "INVALID_USERNAME",
+                code: "USERNAME_TAKEN",
                 message: "Username already taken"
             })
         }

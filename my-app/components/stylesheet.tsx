@@ -5,12 +5,18 @@ export default function stylesheet() {
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            justifyContent: "center",
             alignItems: "center",
             backgroundColor: "#12072E",
         },
+        containerCenter: {
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#12072E",
+        },
         text: {
-            color: "white"
+            color: "white",
+            fontSize: 16,
         },
         link: {
             color: "#00C4D6",
@@ -38,7 +44,6 @@ export default function stylesheet() {
         containerH: {
             flexDirection: "row",
             alignItems: "flex-start",
-            marginBottom: 16,
             gap: 8,
         },
         input: {
@@ -61,15 +66,40 @@ export default function stylesheet() {
         },
         leaderboard : {
             color: "#ffffff",
-            marginBottom: 24,
-            textAlign : "center"
+            padding: 16,
+            borderRadius: 15,
+            fontSize : 16,
         },
         first : {
             fontSize : 24,
             color : "#ffffff",
+            marginTop: 24,
             marginBottom: 24,
-            textAlign : "center",
-            fontWeight : "bold"
+            padding: 16,
+            borderRadius: 15,
+            fontWeight : "bold",
+            borderColor : "#FFD700",
+            borderWidth : 2
+        },
+        second : {
+            fontSize : 20,
+            color : "#ffffff",
+            marginBottom: 24,
+            padding: 16,
+            borderRadius: 15,
+            fontWeight : "bold",
+            borderColor : "#C0C0C0",
+            borderWidth : 2
+        },
+        third : {
+            fontSize : 18,
+            color : "#ffffff",
+            marginBottom: 64,
+            padding: 16,
+            borderRadius: 15,
+            fontWeight : "bold",
+            borderColor : "#CD7F32",
+            borderWidth : 2
         },
         scrollBox : {
             width : '100%',
@@ -77,17 +107,13 @@ export default function stylesheet() {
             padding : 16
         },
         disconnectButton : {
-            marginTop : 32,
-            backgroundColor: "#00C4D6",
-            padding: 16,
-            borderRadius: 15,
-            marginBottom: 16,
-            width: 160,
-            justifyContent: "center",
-            alignItems: "center",
+            position : "absolute",
+            top : 40,
+            right : 16,
+            padding : 8,
         },
         profileInput : {
-            width: '50%',
+            width: 250,
             borderWidth: 1,
             padding: 16,
             backgroundColor: "white",
@@ -98,7 +124,8 @@ export default function stylesheet() {
             flexDirection : "row",
             alignItems : "center",
             gap : 8,
-            height : 60
+            height : 60,
+            marginTop : 16
         },
         profileButton : {
             backgroundColor: "#00C4D6",
@@ -109,6 +136,29 @@ export default function stylesheet() {
         },
         marginTop : {
             marginTop : 16
+        },
+        marginBottom : {
+            marginBottom : 48
+        },
+        big : {
+            fontSize : 48,
+            fontWeight : "bold",
+            color : "#ffffff",
+            marginTop: 40
+        },
+        profilePicture : {
+            width: 250,
+            height: 250,
+            borderRadius: 125,
+            borderColor: "#ffffff",
+            borderWidth: 2,
+            marginBottom: 16,
+            marginTop: 56
+        },
+        profileUsername : {
+            fontSize: 24,
+            fontWeight: "bold",
+            color: "#ffffff",
         }
     })
     return styles;
