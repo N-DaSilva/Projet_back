@@ -94,7 +94,7 @@ export default function stylesheet() {
         third : {
             fontSize : 18,
             color : "#ffffff",
-            marginBottom: 64,
+            marginBottom: 32,
             padding: 16,
             borderRadius: 15,
             fontWeight : "bold",

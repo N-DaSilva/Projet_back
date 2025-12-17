@@ -1,8 +1,9 @@
-import { ScrollView, Text } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import stylesheet from '@/components/stylesheet';
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+
 
 export default function Leaderboard() {
     const styles = stylesheet();
@@ -45,15 +46,22 @@ export default function Leaderboard() {
                     <Text style={styles.loading}>Chargement...</Text>
 
                 ) :
-
-                    // leaderboard.map((user) => <Text style={leaderboard.findIndex((u) => u._id === user._id) === 0 ? styles.first : styles.leaderboard} key={user._id}>{leaderboard.findIndex((u) => u._id === user._id) + 1}. {user.username} - {user.score} pts</Text>)
-
                     leaderboard.map((user, index) => {
-                        let style = styles.leaderboard;
-                        if (index === 0) style = styles.first;
-                        else if (index === 1) style = styles.second;
-                        else if (index === 2) style = styles.third;
-                        return <Text style={style} key={user._id}>{index + 1}. {user.username} - {user.score} pts</Text>;
+                        if (index === 0) {
+                            return <Text style={styles.first} key={user._id}>🥇 {user.username} - {user.score} pts</Text>;
+                        }
+                        else if (index === 1) {
+                            return <Text style={styles.second} key={user._id}>🥈 {user.username} - {user.score} pts</Text>;
+                        }
+                        else if (index === 2) {
+                            return (
+                                <>
+                                    <Text style={styles.third} key={user._id}>🥉 {user.username} - {user.score} pts</Text>
+                                    <View style={{ width: '100%' , height: 1, backgroundColor: '#ccc' , marginBottom: 12}}></View>
+                                </>
+                            );
+                        }
+                        return <Text style={styles.leaderboard} key={user._id}>{index + 1}. {user.username} - {user.score} pts</Text>;
                     })
                 }
             </ScrollView>
