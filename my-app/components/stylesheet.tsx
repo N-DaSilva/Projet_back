@@ -144,7 +144,7 @@ export default function stylesheet() {
             fontSize : 48,
             fontWeight : "bold",
             color : "#ffffff",
-            marginTop: 40
+            marginTop: 64
         },
         profilePicture : {
             width: 250,

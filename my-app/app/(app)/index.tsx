@@ -76,7 +76,6 @@ export default function Homepage() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Star Clicker</Text>
             <Text style={styles.big}>{points} pts</Text>
             <Pressable onPress={handlePress} onPressIn={shrinkButton} onPressOut={() => {
                 Animated.spring(buttonClickAnim, {

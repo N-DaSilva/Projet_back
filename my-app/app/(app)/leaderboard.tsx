@@ -38,7 +38,7 @@ export default function Leaderboard() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Leaderboard</Text>
+            <Text style={styles.title}>Classement</Text>
             <ScrollView style={styles.scrollBox}>
 
                 {showLoader ? (
@@ -48,20 +48,20 @@ export default function Leaderboard() {
                 ) :
                     leaderboard.map((user, index) => {
                         if (index === 0) {
-                            return <Text style={styles.first} key={index}>🥇 {user.username} - {user.score} pts</Text>;
+                            return <Text style={styles.first} key={user._id}>🥇 {user.username} - {user.score} pts</Text>;
                         }
                         else if (index === 1) {
-                            return <Text style={styles.second} key={index}>🥈 {user.username} - {user.score} pts</Text>;
+                            return <Text style={styles.second} key={user._id}>🥈 {user.username} - {user.score} pts</Text>;
                         }
                         else if (index === 2) {
                             return (
                                 <>
-                                    <Text style={styles.third} key={index}>🥉 {user.username} - {user.score} pts</Text>
+                                    <Text style={styles.third} key={user._id}>🥉 {user.username} - {user.score} pts</Text>
                                     <View style={{ width: '100%' , height: 1, backgroundColor: '#ccc' , marginBottom: 12}}></View>
                                 </>
                             );
                         }
-                        return <Text style={styles.leaderboard} key={index}>{index + 1}. {user.username} - {user.score} pts</Text>;
+                        return <Text style={styles.leaderboard} key={user._id}>{index + 1}. {user.username} - {user.score} pts</Text>;
                     })
                 }
             </ScrollView>

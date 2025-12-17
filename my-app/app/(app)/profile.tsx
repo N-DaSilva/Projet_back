@@ -15,7 +15,7 @@ export default function Profile() {
     const [userData, setUserData] = useState({ username: '', joined_the: '', score: 0 });
     const [newUsername, setNewUsername] = useState(userData.username);
     const [usernameUpdated, setUsernameUpdated] = useState({ state: false, reason: '' });
-    const [displayModify, setDisplayModify] = useState(false);
+    const [displayModify, setDisplayModify] = useState({ state: false, color: 'white' });
 
     const disconnect = () => {
         logout();
@@ -77,39 +77,41 @@ export default function Profile() {
     }
 
     const handleDisplayModify = () => {
-        setDisplayModify(!displayModify);
+        setDisplayModify({ state: !displayModify.state, color: displayModify.color == 'white' ? '#00C4D6' : 'white' });
     }
 
     useFocusEffect(
         useCallback(() => {
             getUserData();
             setUsernameUpdated({ state: false, reason: '' });
-            setDisplayModify(false);
+            setDisplayModify({ state: false, color: 'white' });
         }, [])
     );
 
     return (
         <SafeAreaView style={styles.container}>
+            <Text style={styles.title}>Profil</Text>
+            <Pressable style={styles.disconnectButton} onPress={disconnect}>
+                <Ionicons name="exit-outline" size={32} color="white" />
+            </Pressable>
+
+
             {showLoader ? (
 
                 <Text style={styles.loading}>Chargement...</Text>
 
             ) : (
                 <>
-                    <Text style={styles.title}>Profil</Text>
-                    <Pressable style={styles.disconnectButton} onPress={disconnect}>
-                        <Ionicons name="exit-outline" size={32} color="white" />
-                    </Pressable>
 
-                    <Image style={styles.profilePicture} source={require('@/assets/images/profile-picture.png')}/>
+                    <Image style={styles.profilePicture} source={require('@/assets/images/profile-picture.png')} />
                     <View style={styles.containerH}>
                         <Text style={styles.profileUsername}>{userData.username}</Text>
                         <Pressable onPress={handleDisplayModify}>
-                            <FontAwesome name="pencil-square-o" size={20} color="white" />
+                            <FontAwesome name="pencil-square-o" size={20} color={displayModify.color} />
                         </Pressable>
                     </View>
 
-                    {displayModify ? (
+                    {displayModify.state ? (
                         <>
                             <View style={styles.profileContainer}>
                                 <TextInput style={styles.profileInput} onChangeText={newUsrText => setNewUsername(newUsrText)} placeholder="Nouveau pseudo" />
