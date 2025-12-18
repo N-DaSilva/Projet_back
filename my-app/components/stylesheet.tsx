@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 
 export default function stylesheet() {
     const styles = StyleSheet.create({
+        //general
         container: {
             flex: 1,
             alignItems: "center",
@@ -71,11 +72,13 @@ export default function stylesheet() {
             marginTop: 16,
             textAlign: "center"
         },
+        //clicker page
         clickerButton: {
             height: 300,
             width: 300,
             marginTop: 32,
         },
+        //leaderboard page
         leaderboard : {
             color: "#ffffff",
             padding: 16,
@@ -118,6 +121,7 @@ export default function stylesheet() {
             flex : 1,
             padding : 16
         },
+        //profile page
         disconnectButton : {
             position : "absolute",
             top : 40,
