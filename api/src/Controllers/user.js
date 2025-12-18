@@ -10,7 +10,10 @@ const config = require("../config");
 
 const JWT_MAX_AGE = "6m"; // 6 months
 
-router.get("/", async (req, res) => {
+router.get("/", passport.authenticate("user", {
+    session: false,
+    failWithError: true,
+}), async (req, res) => {
 
     try {
         const users = await UserObject.find().select("-password").lean();
