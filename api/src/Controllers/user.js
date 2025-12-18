@@ -25,7 +25,10 @@ router.get("/", async (req, res) => {
 })
 
 router.get(
-    "/find/:id", async (req, res) => {
+    "/find/:id", passport.authenticate("user", {
+    session: false,
+    failWithError: true,
+  }), async (req, res) => {
         const { id } = req.params;
 
         if (id.length < 24) {
@@ -140,7 +143,10 @@ router.post("/signup", async (req, res) => {
     }
 });
 
-router.put("/:id/username", async (req, res) => {
+router.put("/:id/username", passport.authenticate("user", {
+    session: false,
+    failWithError: true,
+  }), async (req, res) => {
     const { id } = req.params;
     const { username } = req.body;
 
@@ -187,7 +193,10 @@ router.put("/:id/username", async (req, res) => {
     }
 })
 
-router.put("/:id/score", async (req, res) => {
+router.put("/:id/score", passport.authenticate("user", {
+    session: false,
+    failWithError: true,
+  }), async (req, res) => {
     const { id } = req.params;
     const { score } = req.body;
 
@@ -232,7 +241,10 @@ router.put("/:id/score", async (req, res) => {
     }
 });
 
-router.get("/leaderboard", async (req, res) => {
+router.get("/leaderboard", passport.authenticate("user", {
+    session: false,
+    failWithError: true,
+  }), async (req, res) => {
     try {
         const topUsers = await UserObject.find()
             .sort({ score: -1 })
@@ -247,21 +259,5 @@ router.get("/leaderboard", async (req, res) => {
         })
     }
 })
-
-
-//delete after testing
-
-// router.get("/flush", async (req, res) => {
-//     try {
-//         await UserObject.deleteMany({});
-//         return res.status(200).send({ ok: true, message: "All users deleted." });
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).send({
-//             ok: false,
-//             code: "SERVER_ERROR"
-//         });
-//     }
-// })
 
 module.exports = router;
