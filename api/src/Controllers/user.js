@@ -118,7 +118,7 @@ router.post("/signup", async (req, res) => {
             });
         }
 
-        const token = jwt.sign({ _id: UserObject.id }, config.SECRET, {
+        const token = jwt.sign({ _id: existingUser.id }, config.SECRET, {
             expiresIn: JWT_MAX_AGE,
         });
 

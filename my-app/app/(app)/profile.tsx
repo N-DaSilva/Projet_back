@@ -12,7 +12,7 @@ export default function Profile() {
     const styles = stylesheet();
     const { logout } = useContext(AuthContext);
     const [showLoader, setShowLoader] = useState(false);
-    const [userData, setUserData] = useState({ username: '', joined_the: '', score: 0 });
+    const [userData, setUserData] = useState({ username: '', createdAt: '', score: 0 });
     const [newUsername, setNewUsername] = useState(userData.username);
     const [usernameUpdated, setUsernameUpdated] = useState({ state: false, reason: '' });
     const [displayModify, setDisplayModify] = useState({ state: false, color: 'white' });
@@ -127,7 +127,7 @@ export default function Profile() {
 
 
                     <View style={[styles.marginTop, { width: '100%', paddingHorizontal: 48 }]}>
-                        <Text style={[styles.text, styles.marginTop]}>A rejoint le : {userData.joined_the.split("T")[0]}</Text>
+                        <Text style={[styles.text, styles.marginTop]}>A rejoint le : {userData.createdAt.split("T")[0]}</Text>
                         <Text style={[styles.text, styles.marginTop]}>Score : {userData.score} pts</Text>
                     </View>
                 </>
