@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import stylesheet from '@/components/stylesheet';
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import api from "../../service/api";
 
 
 export default function Leaderboard() {
@@ -11,23 +12,17 @@ export default function Leaderboard() {
     const [leaderboard, setLeaderboard] = useState([{ _id: '', username: '', score: 0 }]);
 
     const getLeaderboard = async () => {
+        const { data, ok } = await api.get('/user/leaderboard/');
+
         setShowLoader(true);
 
-        fetch('http://192.168.43.74:3000/user/leaderboard/', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            }
-        }).then((response) => response.json())
-            .then((res) => {
-                setShowLoader(false);
-                if (res.ok) {
-                    setLeaderboard(res.data)
-                } else {
-                    alert('Erreur: ' + res.message);
-                }
-            })
+        if (ok) {
+            setLeaderboard(data);
+            setShowLoader(false);
+            return;
+        } else {
+            alert('Erreur');
+        }
     }
 
     useFocusEffect(

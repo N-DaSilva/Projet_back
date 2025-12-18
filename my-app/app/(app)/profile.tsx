@@ -5,6 +5,8 @@ import stylesheet from '@/components/stylesheet';
 import { useContext, useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { AuthContext } from '../authContext';
+import api from "../../service/api";
+
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -25,51 +27,28 @@ export default function Profile() {
     const updateUsernameOnServer = async (username: string) => {
         const userID = await AsyncStorage.getItem("userId");
 
-        fetch('http://192.168.43.74:3000/user/' + userID + '/username', {
-            method: 'PUT',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: username
-            }),
-        }).then((response) => response.json())
-            .then((res) => {
-                if (res.ok) {
-                    setUsernameUpdated({ state: true, reason: 'Pseudo mis à jour avec succès' });
-                    setUserData({ ...userData, username: newUsername });
-                    return;
-                } else {
-                    if (res.message == 'Username already taken') {
-                        setUsernameUpdated({ state: false, reason: 'Ce pseudo est déjà pris' });
-                    } else {
-                        setUsernameUpdated({ state: false, reason: 'Erreur lors de la mise à jour du pseudo' });
-                    }
-                    return;
-                }
-            })
+        const { ok } = await api.put('/user/' + userID + '/username', { username: username });
+
+        if (ok) {
+            setUsernameUpdated({ state: true, reason: 'Pseudo mis à jour avec succès' });
+            setUserData({ ...userData, username: newUsername });
+            return;
+        } else {
+            setUsernameUpdated({ state: false, reason: 'Erreur lors de la mise à jour du pseudo' });
+        }
     }
 
     const getUserData = async () => {
         setShowLoader(true);
         const userId = await AsyncStorage.getItem('userId');
+        const { ok, data } = await api.get('/user/find/' + userId);
 
-        fetch('http://192.168.43.74:3000/user/find/' + userId, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            }
-        }).then((response) => response.json())
-            .then((res) => {
-                setShowLoader(false);
-                if (res.ok) {
-                    setUserData(res.data);
-                } else {
-                    alert('Erreur: ' + res.message);
-                }
-            })
+        if (ok) {
+            setShowLoader(false);
+            setUserData(data);
+        } else {
+            console.log('Erreur')
+        }
     }
 
     const handleUsernameUpdate = () => {

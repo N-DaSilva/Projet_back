@@ -1,7 +1,5 @@
 import { API_HOST } from "../config";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthContext } from '../app/authContext';
-import { useContext } from "react";
 
 class APIHandler {
   async removeToken() {
@@ -14,7 +12,7 @@ class APIHandler {
 
   async getHeaders() {
     const currentToken = await AsyncStorage.getItem('token');
-    console.log(currentToken)
+    
     return {
       "Content-Type": "application/json",
       Authorization: currentToken ? `Bearer ${currentToken}` : "",
@@ -54,10 +52,11 @@ class APIHandler {
   async get(endpoint, options = {}) {
     try {
       console.log(`[API] GET ${API_HOST}${endpoint}`);
+      const headers = await this.getHeaders()
       const response = await fetch(`${API_HOST}${endpoint}`, {
         method: "GET",
         headers: {
-          ...this.getHeaders(),
+          ...headers,
           ...options.headers,
         },
         credentials: "include",
@@ -78,12 +77,14 @@ class APIHandler {
   }
 
   async put(endpoint, data, options = {}) {
+    console.log('check2:',data);
+    const headers = await this.getHeaders()
     try {
       console.log(`[API] PUT ${API_HOST}${endpoint}`);
       const response = await fetch(`${API_HOST}${endpoint}`, {
         method: "PUT",
         headers: {
-          ...this.getHeaders(),
+          ...headers,
           ...options.headers,
         },
         body: JSON.stringify(data),
@@ -107,10 +108,11 @@ class APIHandler {
   async delete(endpoint, data, options = {}) {
     try {
       console.log(`[API] DELETE ${API_HOST}${endpoint}`);
+      const headers = await this.getHeaders()
       const response = await fetch(`${API_HOST}${endpoint}`, {
         method: "DELETE",
         headers: {
-          ...this.getHeaders(),
+          ...headers,
           ...options.headers,
         },
         credentials: "include",

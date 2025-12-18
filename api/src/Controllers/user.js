@@ -25,11 +25,7 @@ router.get("/", async (req, res) => {
 })
 
 router.get(
-    "/find/:id",
-    passport.authenticate(["user", "admin"], {
-        session: false,
-        failWithError: true,
-    }), async (req, res) => {
+    "/find/:id", async (req, res) => {
         const { id } = req.params;
 
         if (id.length < 24) {
@@ -126,14 +122,14 @@ router.post("/signup", async (req, res) => {
             });
         }
 
-        const token = jwt.sign({ _id: existingUser.id }, config.SECRET, {
-            expiresIn: JWT_MAX_AGE,
-        });
-
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const newUser = await UserObject.create({ username, password: hashedPassword });
+
+        const token = jwt.sign({ _id: newUser.id }, config.SECRET, {
+            expiresIn: JWT_MAX_AGE,
+        });
 
         return res.status(200).send({ ok: true, token, data: newUser });
 
@@ -146,11 +142,7 @@ router.post("/signup", async (req, res) => {
     }
 });
 
-router.put("/:id/username",
-    passport.authenticate("user", {
-    session: false,
-    failWithError: true,
-  }), async (req, res) => {
+router.put("/:id/username", async (req, res) => {
     const { id } = req.params;
     const { username } = req.body;
 
@@ -197,11 +189,7 @@ router.put("/:id/username",
     }
 })
 
-router.put("/:id/score",
-    passport.authenticate("user", {
-    session: false,
-    failWithError: true,
-  }), async (req, res) => {
+router.put("/:id/score", async (req, res) => {
     const { id } = req.params;
     const { score } = req.body;
 
@@ -246,11 +234,7 @@ router.put("/:id/score",
     }
 });
 
-router.get("/leaderboard",
-    passport.authenticate("user", {
-    session: false,
-    failWithError: true,
-  }), async (req, res) => {
+router.get("/leaderboard", async (req, res) => {
     try {
         const topUsers = await UserObject.find()
             .sort({ score: -1 })

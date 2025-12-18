@@ -26,13 +26,11 @@ export default function Homepage() {
 
         const { ok, data } = await api.get('/user/find/' + userID);
 
-        console.log(ok, data);
-
-        // if (ok) {
-        //     setPoints(data.score);
-        // } else {
-        //     console.error('Erreur');
-        // }
+        if (ok) {
+            setPoints(data.score);
+        } else {
+            console.error('Erreur');
+        }
     }
 
     useEffect(() => {
@@ -40,35 +38,26 @@ export default function Homepage() {
     }, [])
 
     const updateScoreOnServer = async (points: number) => {
-        console.log('update');
-        // const userID = await AsyncStorage.getItem("userId");
+        const userID = await AsyncStorage.getItem("userId");
 
-        // fetch('http://192.168.43.74:3000/user/' + userID + '/score', {
-        //     method: 'PUT',
-        //     headers: {
-        //         Accept: 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         score: points
-        //     }),
-        // }).then((response) => response.json())
-        //     .then((res) => {
-        //         if (res.ok) {
-        //             return;
-        //         } else {
-        //             alert('Erreur: ' + res.message);
-        //         }
-        //     })
+        const { ok } = await api.put('/user/' + userID + '/score', { score: points });
+
+        if (ok) {
+            return ok;
+        } else {
+            alert('Erreur');
+        }
     }
 
-    const handlePress = () => {
-        setPoints(prev => {
-            const newPoints = prev + 1;
-            updateScoreOnServer(newPoints);
-            return newPoints;
-        });
-
+    const handlePress = async () => {
+        const newPoints = await points + 1;
+        const updated = await updateScoreOnServer(newPoints);
+            if (updated) {
+                setPoints(newPoints);
+            } else {
+                console.log('Score not updated');
+            }
+            return;
     };
 
     return (
