@@ -94,8 +94,6 @@ router.post("/signin", async (req, res) => {
             expiresIn: JWT_MAX_AGE,
         });
 
-        console.log('token: ', user.id);
-
         return res.status(200).send({ ok: true, token, data: user });
 
     } catch (error) {
