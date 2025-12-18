@@ -11,7 +11,5 @@ const Schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-//...
-
 const OBJ = mongoose.model(MODELNAME, Schema);
 module.exports = OBJ;

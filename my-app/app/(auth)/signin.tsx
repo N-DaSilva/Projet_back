@@ -15,12 +15,12 @@ export default function Index() {
   const [password, setPassword] = useState('');
   const [showLoader, setShowLoader] = useState(false);
   const [message, setMessage] = useState({ message: '', color: 'white' });
-  
+
 
   const handleSignin = async () => {
     const loginUsername = await username;
     const loginPassword = await password;
-    
+
     const { ok, token, data } = await api.post('/user/signin', {
       username: loginUsername,
       password: loginPassword,
@@ -29,16 +29,13 @@ export default function Index() {
     setMessage({ message: '', color: 'white' });
     setShowLoader(true);
 
-    if (ok != undefined) {
+    if (ok) {
       setShowLoader(false);
-      if (ok) {
-          login(token, data._id);
-          console.log('logged in');
-      } else {
-        setMessage({ message: "Identifiants incorrects", color: 'red' });
-      }
+      login(token, data._id);
+      console.log('logged in');
     } else {
-      setMessage({ message: "Erreur lors de la connexion", color: 'red' });
+      setShowLoader(false);
+      setMessage({ message: "Identifiants incorrects", color: 'red' });
     }
   }
 

@@ -1,4 +1,3 @@
-import Leaderboard from "@/app/(app)/leaderboard";
 import { StyleSheet } from "react-native";
 
 export default function stylesheet() {
@@ -13,6 +12,11 @@ export default function stylesheet() {
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "#12072E",
+        },
+        containerH: {
+            flexDirection: "row",
+            alignItems: "flex-start",
+            gap: 8,
         },
         text: {
             color: "white",
@@ -41,11 +45,6 @@ export default function stylesheet() {
             color: "#12072E",
             fontWeight: "bold",
         },
-        containerH: {
-            flexDirection: "row",
-            alignItems: "flex-start",
-            gap: 8,
-        },
         input: {
             width: '90%',
             margin: 12,
@@ -55,14 +54,27 @@ export default function stylesheet() {
             borderRadius: 15,
             borderColor: "transparent",
         },
+        marginTop : {
+            marginTop : 16
+        },
+        marginBottom : {
+            marginBottom : 48
+        },
+        big : {
+            fontSize : 48,
+            fontWeight : "bold",
+            color : "#ffffff",
+            marginTop: 64
+        },
+        loading : {
+            color: "white",
+            marginTop: 16,
+            textAlign: "center"
+        },
         clickerButton: {
             height: 300,
             width: 300,
             marginTop: 32,
-        },
-        loading : {
-            color: "white",
-            marginTop: 16
         },
         leaderboard : {
             color: "#ffffff",
@@ -133,18 +145,6 @@ export default function stylesheet() {
             borderRadius: 15,
             width: '15%',
             alignItems: "center",
-        },
-        marginTop : {
-            marginTop : 16
-        },
-        marginBottom : {
-            marginBottom : 48
-        },
-        big : {
-            fontSize : 48,
-            fontWeight : "bold",
-            color : "#ffffff",
-            marginTop: 64
         },
         profilePicture : {
             width: 250,

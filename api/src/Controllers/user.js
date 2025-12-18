@@ -26,9 +26,9 @@ router.get("/", async (req, res) => {
 
 router.get(
     "/find/:id", passport.authenticate("user", {
-    session: false,
-    failWithError: true,
-  }), async (req, res) => {
+        session: false,
+        failWithError: true,
+    }), async (req, res) => {
         const { id } = req.params;
 
         if (id.length < 24) {
@@ -146,7 +146,7 @@ router.post("/signup", async (req, res) => {
 router.put("/:id/username", passport.authenticate("user", {
     session: false,
     failWithError: true,
-  }), async (req, res) => {
+}), async (req, res) => {
     const { id } = req.params;
     const { username } = req.body;
 
@@ -196,7 +196,7 @@ router.put("/:id/username", passport.authenticate("user", {
 router.put("/:id/score", passport.authenticate("user", {
     session: false,
     failWithError: true,
-  }), async (req, res) => {
+}), async (req, res) => {
     const { id } = req.params;
     const { score } = req.body;
 
@@ -244,7 +244,7 @@ router.put("/:id/score", passport.authenticate("user", {
 router.get("/leaderboard", passport.authenticate("user", {
     session: false,
     failWithError: true,
-  }), async (req, res) => {
+}), async (req, res) => {
     try {
         const topUsers = await UserObject.find()
             .sort({ score: -1 })
