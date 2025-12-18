@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-//use passport to check jwt token
+const passport = require("passport")
 
 const UserObject = require("../Models/user");
 
@@ -11,6 +11,7 @@ const config = require("../config");
 const JWT_MAX_AGE = "6m"; // 6 months
 
 router.get("/", async (req, res) => {
+
     try {
         const users = await UserObject.find().select("-password").lean();
         return res.status(200).send({ ok: true, data: users });
@@ -23,38 +24,43 @@ router.get("/", async (req, res) => {
     }
 })
 
-router.get("/find/:id", async (req, res) => {
-    const { id } = req.params;
+router.get(
+    "/find/:id",
+    passport.authenticate(["user", "admin"], {
+        session: false,
+        failWithError: true,
+    }), async (req, res) => {
+        const { id } = req.params;
 
-    if (id.length < 24) {
-        return res.status(400).send({
-            ok: false,
-            code: "INVALID_ID",
-            message: "ID is not valid"
-        });
-    }
-    
-    try {
-        const user = await UserObject.findById(id);
-
-        if (!user){
-            return res.status(404).send({
+        if (id.length < 24) {
+            return res.status(400).send({
                 ok: false,
-                code: "USER_NOT_FOUND",
-                message: "User not found"
-            })
+                code: "INVALID_ID",
+                message: "ID is not valid"
+            });
         }
 
-        return res.status(200).send({ ok: true, data: user });
+        try {
+            const user = await UserObject.findById(id);
 
-    } catch (error) {
-        console.log(error);
-        return res.status(500).send({
-            ok: false,
-            code: "SERVER_ERROR"
-        });
-    }
-})
+            if (!user) {
+                return res.status(404).send({
+                    ok: false,
+                    code: "USER_NOT_FOUND",
+                    message: "User not found"
+                })
+            }
+
+            return res.status(200).send({ ok: true, data: user });
+
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send({
+                ok: false,
+                code: "SERVER_ERROR"
+            });
+        }
+    })
 
 router.post("/signin", async (req, res) => {
     let { username, password } = req.body;
@@ -69,7 +75,7 @@ router.post("/signin", async (req, res) => {
 
     try {
         const user = await UserObject.findOne({ username });
-        
+
         if (!user) {
             return res.status(401).send({
                 ok: false,
@@ -91,6 +97,8 @@ router.post("/signin", async (req, res) => {
         const token = jwt.sign({ _id: user.id }, config.SECRET, {
             expiresIn: JWT_MAX_AGE,
         });
+
+        console.log('token: ', user.id);
 
         return res.status(200).send({ ok: true, token, data: user });
 
@@ -138,7 +146,11 @@ router.post("/signup", async (req, res) => {
     }
 });
 
-router.put("/:id/username", async (req, res) => {
+router.put("/:id/username",
+    passport.authenticate("user", {
+    session: false,
+    failWithError: true,
+  }), async (req, res) => {
     const { id } = req.params;
     const { username } = req.body;
 
@@ -161,7 +173,7 @@ router.put("/:id/username", async (req, res) => {
             });
         }
 
-        const userWithSameName = await UserObject.find({ username : username });
+        const userWithSameName = await UserObject.find({ username: username });
 
         if (userWithSameName.length != 0) {
             return res.status(401).send({
@@ -185,7 +197,11 @@ router.put("/:id/username", async (req, res) => {
     }
 })
 
-router.put("/:id/score", async (req, res) => {
+router.put("/:id/score",
+    passport.authenticate("user", {
+    session: false,
+    failWithError: true,
+  }), async (req, res) => {
     const { id } = req.params;
     const { score } = req.body;
 
@@ -230,11 +246,15 @@ router.put("/:id/score", async (req, res) => {
     }
 });
 
-router.get("/leaderboard", async (req, res) => {
+router.get("/leaderboard",
+    passport.authenticate("user", {
+    session: false,
+    failWithError: true,
+  }), async (req, res) => {
     try {
         const topUsers = await UserObject.find()
-        .sort({ score: -1})
-        .limit(100);
+            .sort({ score: -1 })
+            .limit(100);
 
         return res.status(200).send({ ok: true, data: topUsers });
     } catch (error) {

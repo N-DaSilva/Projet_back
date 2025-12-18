@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import stylesheet from '@/components/stylesheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
+import api from "../../service/api";
 
 export default function Homepage() {
     const styles = stylesheet();
@@ -23,20 +24,15 @@ export default function Homepage() {
     const setInitialScore = async () => {
         const userID = await AsyncStorage.getItem("userId");
 
-        fetch('http://192.168.43.74:3000/user/find/' + userID, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            }
-        }).then((response) => response.json())
-            .then((res) => {
-                if (res.ok) {
-                    setPoints(res.data.score);
-                } else {
-                    alert('Erreur: ' + res.message);
-                }
-            })
+        const { ok, data } = await api.get('/user/find/' + userID);
+
+        console.log(ok, data);
+
+        // if (ok) {
+        //     setPoints(data.score);
+        // } else {
+        //     console.error('Erreur');
+        // }
     }
 
     useEffect(() => {
@@ -44,25 +40,26 @@ export default function Homepage() {
     }, [])
 
     const updateScoreOnServer = async (points: number) => {
-        const userID = await AsyncStorage.getItem("userId");
+        console.log('update');
+        // const userID = await AsyncStorage.getItem("userId");
 
-        fetch('http://192.168.43.74:3000/user/' + userID + '/score', {
-            method: 'PUT',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                score: points
-            }),
-        }).then((response) => response.json())
-            .then((res) => {
-                if (res.ok) {
-                    return;
-                } else {
-                    alert('Erreur: ' + res.message);
-                }
-            })
+        // fetch('http://192.168.43.74:3000/user/' + userID + '/score', {
+        //     method: 'PUT',
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //         score: points
+        //     }),
+        // }).then((response) => response.json())
+        //     .then((res) => {
+        //         if (res.ok) {
+        //             return;
+        //         } else {
+        //             alert('Erreur: ' + res.message);
+        //         }
+        //     })
     }
 
     const handlePress = () => {
@@ -86,13 +83,13 @@ export default function Homepage() {
             }}>
                 <Animated.View style={[{ transform: [{ scale: buttonClickAnim }] }]}>
                     <Image
-                    style={styles.clickerButton}
-                    source={require('@/assets/images/splash-icon.png')}
-                />
+                        style={styles.clickerButton}
+                        source={require('@/assets/images/splash-icon.png')}
+                    />
                 </Animated.View>
             </Pressable>
 
-            <Image style={{width: 400, height: 220}} source={require('@/assets/images/home-illus.png')}/>
+            <Image style={{ width: 400, height: 220 }} source={require('@/assets/images/home-illus.png')} />
         </SafeAreaView>
     )
 }

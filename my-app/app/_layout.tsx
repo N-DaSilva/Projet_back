@@ -1,6 +1,5 @@
 import { Stack } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState, useContext } from 'react';
+import { useContext } from 'react';
 import { AuthContext } from './authContext';
 import AuthProvider from './authContext';
 
