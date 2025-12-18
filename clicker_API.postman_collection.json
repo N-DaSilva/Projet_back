@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "cc1d45cf-21fe-47bc-8384-6d30b422fcd4",
+		"name": "test API clicker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42776353"
+	},
+	"item": [
+		{
+			"name": "global test",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"johndoe\",\r\n    \"password\": \"test\"\r\n}"
+				},
+				"url": {
+					"raw": "https://projet-back-api.onrender.com",
+					"protocol": "https",
+					"host": [
+						"projet-back-api",
+						"onrender",
+						"com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://projet-back-api.onrender.com/user",
+					"protocol": "https",
+					"host": [
+						"projet-back-api",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user by id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://projet-back-api.onrender.com/user/find/69440b1140962ff87a154994",
+					"protocol": "https",
+					"host": [
+						"projet-back-api",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"user",
+						"find",
+						"69440b1140962ff87a154994"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "leaderboard",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://projet-back-api.onrender.com/user/leaderboard",
+					"protocol": "https",
+					"host": [
+						"projet-back-api",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"user",
+						"leaderboard"
+					],
+					"query": [
+						{
+							"key": null,
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signin test",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"toto\",\r\n    \"password\": \"toto\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://projet-back-api.onrender.com/user/signin",
+					"protocol": "https",
+					"host": [
+						"projet-back-api",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"user",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signup test",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"janedoe\",\r\n    \"password\": \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://projet-back-api.onrender.com/user/signup",
+					"protocol": "https",
+					"host": [
+						"projet-back-api",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"user",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update score",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"score\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://projet-back-api.onrender.com/user/694416479153a029d7ed5f60/score",
+					"protocol": "https",
+					"host": [
+						"projet-back-api",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"user",
+						"694416479153a029d7ed5f60",
+						"score"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update username",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"titi\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://projet-back-api.onrender.com/user/694416479153a029d7ed5f60/username",
+					"protocol": "https",
+					"host": [
+						"projet-back-api",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"user",
+						"694416479153a029d7ed5f60",
+						"username"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OTQ0MTY0NzkxNTNhMDI5ZDdlZDVmNjAiLCJpYXQiOjE3NjYwNzIzNzUsImV4cCI6MTc2NjA3MjczNX0.4AFiXjN9fcqx2JM4_5RXg_Vk1f7EDejDoh7sbEcVFXE",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
